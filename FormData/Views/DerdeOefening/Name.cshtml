@@ -1,0 +1,12 @@
+﻿@{
+}
+
+<div class="text-center">
+    @if (ViewBag.Name == null)
+    {
+        <h1 class="display-4">Welcome stranger</h1>
+    } else
+    {
+        <h1 class="display-4">Welcome @ViewBag.Name</h1>
+    }
+</div>
