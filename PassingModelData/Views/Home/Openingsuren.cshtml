@@ -1,0 +1,52 @@
+﻿@using PassingModelData.Models
+@model IEnumerable<BusinessDay>
+
+<div class="container mt-4">
+    <h2>Onze Openingsuren</h2>
+
+    <div class="mb-4">
+        @if ((bool)ViewBag.IsOpenNow)
+        {
+            <div class="alert alert-success">
+                <strong>Status:</strong> De winkel is op dit moment <strong>OPEN</strong>! ✅
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-danger">
+                <strong>Status:</strong> De winkel is op dit moment <strong>GESLOTEN</strong>. ❌
+            </div>
+        }
+    </div>
+
+    <table class="table table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>Dag</th>
+                <th>Uren</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var day in Model)
+            {
+                // Highlight the current day
+                var isToday = day.Day == DateTime.Now.DayOfWeek;
+                <tr class="@(isToday ? "table-warning fw-bold" : "")">
+                    <td>@day.Day</td>
+                    <td>
+                        @if (day.IsClosed)
+                        {
+                            <span class="text-danger">Gesloten</span>
+                        }
+                        else
+                        {
+                            <span>@day.OpenTime.ToString(@"hh\:mm") - @day.CloseTime.ToString(@"hh\:mm")</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <p class="text-muted">Huidige tijd: @DateTime.Now.ToString("HH:mm")</p>
+</div>
