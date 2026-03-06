@@ -1,0 +1,48 @@
+﻿@model List<Oefening1.Models.ProductModel>
+@{
+    ViewData["Title"] = "Besteloverzicht";
+    float totaalPrijs = 0;
+}
+
+<h2>Overzicht van uw bestelling</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Product</th>
+            <th>Aantal</th>
+            <th>Subtotaal</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            float subTotaal = (item.Price ?? 0) * item.Quantity;
+            totaalPrijs += subTotaal;
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Quantity</td>
+                <td>@subTotaal.ToString("C")</td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <th colspan="2" class="text-end">Totaal:</th>
+            <th>@totaalPrijs.ToString("C")</th>
+        </tr>
+    </tfoot>
+</table>
+
+<form asp-action="BevestigBestelling" method="post" class="mt-4">
+    @for (int i = 0; i < Model.Count; i++)
+    {
+        <input type="hidden" asp-for="@Model[i].Name" />
+        <input type="hidden" asp-for="@Model[i].Quantity" />
+    }
+
+    <div class="d-flex justify-content-between">
+        <a asp-action="Producten" class="btn btn-secondary">Annuleren</a>
+        <button type="submit" class="btn btn-success">Definitief Bestellen</button>
+    </div>
+</form>
